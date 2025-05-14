@@ -15,8 +15,8 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error(err));
 
-app.use('/api', authRoutes);
-app.use('/api', aadhaarRoutes);
+app.use('/api/v1/auth/', authRoutes);
+app.use('/api/v1/aadhaar/', aadhaarRoutes);
 
 const PORT = process.env.PORT || 5000;
 
