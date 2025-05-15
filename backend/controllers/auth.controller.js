@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 import { User } from "../models/user.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { apiError } from "../utils/apiError.js";
@@ -38,7 +37,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const user = await User.create({
     username: normalizedUsername,
-    password: await bcrypt.hash(password, 10),
+    password: password,
   });
 
   const createdUser = await User.findById(user._id).select(
