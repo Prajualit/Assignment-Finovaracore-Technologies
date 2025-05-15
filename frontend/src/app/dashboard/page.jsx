@@ -8,10 +8,6 @@ export default function Dashboard() {
   const [result, setResult] = useState(null);
   const router = useRouter();
 
-  useEffect(() => {
-    if (!localStorage.getItem('token')) router.push('/login');
-  }, []);
-
   return (
     <div>
       <h1>Dashboard</h1>
