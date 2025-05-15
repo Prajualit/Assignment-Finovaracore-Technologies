@@ -24,8 +24,8 @@ const generateAccessAndRefreshTokens = async (userId) => {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, password } = req.body;
-  if ([username, password].some((field) => field?.trim() === "")) {
+  const { username, password, role } = req.body;
+  if ([username, password, role].some((field) => field?.trim() === "")) {
     throw new apiError(400, "All fields are required");
   }
 
@@ -38,6 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     username: normalizedUsername,
     password: password,
+    role: role,
   });
 
   const createdUser = await User.findById(user._id).select(
