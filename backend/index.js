@@ -1,23 +1,15 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import authRoutes from './routes/auth.route.js';
-import aadhaarRoutes from './routes/aadhaar.route.js';
-
+import dotenv from "dotenv";
 dotenv.config();
+import mongoDB from "./db/index.js";
+import { app } from "./app.js";
 
-const app = express();
-app.use(cors());
-app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error(err));
-
-app.use('/api/v1/auth/', authRoutes);
-app.use('/api/v1/aadhaar/', aadhaarRoutes);
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+mongoDB()
+.then(() => {
+  app.listen(process.env.PORT || 5000,() => {
+    console.log(`Server is running on port ${process.env.PORT}`);
+  })
+})
+.catch((error) => {
+  console.log("MongoDB Failed to Connect", error)
+})
