@@ -10,7 +10,7 @@ export default function LoginForm() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('/users/login', { username, password }, { withCredentials: "include" });
+            const res = await axios.post('/users/login', { username, password }, { withCredentials: true });
             console.log('Login successful');
             router.push('/dashboard');
         } catch (err) {
