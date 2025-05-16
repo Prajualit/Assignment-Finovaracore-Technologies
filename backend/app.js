@@ -1,4 +1,4 @@
-import express, { urlencoded } from "express";
+import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -10,12 +10,12 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use(urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Routes
-import userRouter from "./Routes/auth.route.js";
-import aadhaarRouter from "./Routes/aadhaar.route.js";
+import userRouter from "./routes/auth.route.js";
+import aadhaarRouter from "./routes/aadhaar.route.js";
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/aadhaar", aadhaarRouter);
