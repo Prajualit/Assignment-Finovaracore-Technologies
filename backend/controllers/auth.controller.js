@@ -115,7 +115,7 @@ const logoutUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production", // true in production
-    sameSite: "Lax",
+    sameSite: "None", // required for cross-origin
   };
 
   // Clear cookies
