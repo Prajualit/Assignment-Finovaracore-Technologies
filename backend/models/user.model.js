@@ -16,6 +16,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["Admin", "Distributor", "Retailer"],
     },
+    aadhaar: {
+      type: String,
+      default: "",
+    },
+    dob: {
+      type: String,
+      default: "",
+    },
+    last_updated: {
+      type: Date,
+    },
     refreshToken: {
       type: String,
     },
@@ -60,6 +71,5 @@ userSchema.methods.generateRefreshToken = function () {
 userSchema.methods.verifyPassword = async function (password) {
   return await bcryptjs.compare(password, this.password);
 };
-
 
 export const User = mongoose.model("User", userSchema);
