@@ -7,6 +7,7 @@ export default function SignupForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('Retailer');
+    const [error, setError] = useState('');
     const router = useRouter();
 
     const handleSignup = async (e) => {
@@ -16,7 +17,8 @@ export default function SignupForm() {
             console.log('User registered successfully');
             router.push('/login');
         } catch (err) {
-            console.error(err);
+            console.error(err); 
+            setError(err.response?.data?.message || 'An error occurred');
         }
     };
 
@@ -43,6 +45,7 @@ export default function SignupForm() {
                 <option value="Distributor">Distributor</option>
                 <option value="Retailer">Retailer</option>
             </select>
+            {error && <p className='text-red-500 font-light text-sm '>{error}</p>}
             <button className=' bg-[#dbdbdb] text-[black] font-bold cursor-pointer rounded-md py-3 px-6 shadow-sm shadow-[#d8d8d880] hover:shadow-md focus:shadow-none transition-all duration-300 ' type="submit">Signup</button>
             <div className='text-sm'>
                 Already have an account?&nbsp;
