@@ -4,10 +4,14 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
-app.use(cors({ 
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+app.use(
+  cors({
+    origin:
+      process.env.CORS_ORIGIN ||
+      "https://assignment-finovaracore-technologies-cejyfo0an.vercel.app",
     credentials: true,
-}));
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,6 +23,5 @@ import aadhaarRouter from "./routes/aadhaar.route.js";
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/aadhaar", aadhaarRouter);
-
 
 export { app };
