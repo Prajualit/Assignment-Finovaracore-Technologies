@@ -54,14 +54,11 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-
   const { username, password } = req.body;
-
 
   if ([username, password].some((field) => field?.trim() === "")) {
     throw new apiError(400, "All fields are required");
   }
-
 
   const normalisedUsername = username.trim().toLowerCase();
   const user = await User.findOne({ username: normalisedUsername });
@@ -69,12 +66,10 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new apiError(404, "User does not exist");
   }
 
-
   const isPasswordValid = await user.verifyPassword(password);
   if (!isPasswordValid) {
     throw new apiError(401, "Invalid username or password");
   }
-
 
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
     user._id
@@ -85,7 +80,6 @@ const loginUser = asyncHandler(async (req, res) => {
   );
 
   const options = { httpOnly: true, secure: true };
-
 
   return res
     .status(200)
@@ -101,19 +95,30 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
+  // Optional: Only perform if user is logged in
+  if (!req.user?._id) {
+    throw new apiError(401, "User not authenticated");
+  }
+
+  // Remove refreshToken from DB
   await User.findByIdAndUpdate(
     req.user._id,
-    { $set: { refreshToken: undefined } },
+    { $unset: { refreshToken: "" } },
     { new: true }
   );
 
-  const options = { httpOnly: true, secure: true };
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // true in production
+    sameSite: "Lax",
+  };
 
+  // Clear cookies
   res
     .status(200)
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
-    .json(new apiResponse(200, {}, "User logged out successfully"));
+    .json(new apiResponse(200, null, "User logged out successfully"));
 });
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
